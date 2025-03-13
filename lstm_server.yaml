@@ -15,14 +15,10 @@ paths:
       operationId: lstm_server.get_context
       tags:
         - all
-#        - contexts
       summary: data for a list of token positions and their context
       parameters:
-
         - $ref: '#/parameters/project'
-
         - $ref: '#/parameters/source'
-
         - name: pos
           description: list of queried positions
           in: query
@@ -31,13 +27,9 @@ paths:
           items:
             type: integer
           collectionFormat: csv
-
         - $ref: '#/parameters/left'
-
         - $ref: '#/parameters/right'
-
         - $ref: '#/parameters/dims'
-
         - name: bitmask
           description: >
                 bitmask for selecting specific dimension of state vectors.
@@ -46,7 +38,6 @@ paths:
           required: False
           type: string
           pattern: "^[01]+$"
-
         - name: cells
           description: an array of selected cell indices. Overwritten by 'bitmask'.
           in: query
@@ -55,9 +46,7 @@ paths:
           items:
             type: integer
           collectionFormat: csv
-
         - $ref: '#/parameters/transform'
-
         - name: activation
           description: >
             the activation threshold. Needed for querying matching results
@@ -76,7 +65,6 @@ paths:
     get:
       tags:
         - all
-#        - info
       summary: information about all projects and sources available
       operationId: lstm_server.get_info
       responses:
@@ -91,26 +79,22 @@ paths:
     get:
       tags:
         - all
-#        - search and match
       summary: >
         search for a token within the project. If an index exists,
         it is used otherwise the search uses Regex matching.
       operationId: lstm_server.search
       parameters:
         - $ref: '#/parameters/project'
-
         - name: q
           in: query
           description: query string
           type: string
           required: true
-
         - name: html
           description: formatted results in HTML
           in: query
           type: boolean
           default: false
-
         - name: limit
           description: max number of results
           in: query
@@ -126,7 +110,6 @@ paths:
     get:
       tags:
         - all
-#        - search and match
       summary: find a matching pattern in dataset
       operationId: lstm_server.match
       parameters:
@@ -140,27 +123,21 @@ paths:
           items:
             type: integer
           default: [100,101]
-
         - name: activation
           description: threshold to discretize values
           in: query
           required: true
           type: number
           default: 0.3
-
         - $ref: '#/parameters/left'
-
         - $ref: '#/parameters/right'
-
         - $ref: '#/parameters/dims'
-
         - name: phrase_length
           description: if set, filter only for phrases of this length
           in: query
           required: false
           type: integer
           default: 0
-
         - name: mode
           description: matching mode -- fast or complete
           in: query
@@ -170,7 +147,6 @@ paths:
             - fast
             - precise
           default: fast
-
         - name: constraints
           description: >
             defines the zero constraints as array [left, right]
@@ -178,22 +154,16 @@ paths:
           in: query
           required: false
           type: array
-          maxItems: 2
-          minItems: 2
           items:
             type: integer
-            default: [1,0]
-
-
+          collectionFormat: csv
+          default: [1,0]
         - $ref: '#/parameters/transform'
       responses:
         200:
           description: result
           schema:
             type: object
-
-
-
 
 parameters:
   project:
@@ -203,7 +173,6 @@ parameters:
     required: true
     type: string
     default: ptb_word
-
   source:
     name: source
     description: source data ID (slug)
@@ -211,7 +180,6 @@ parameters:
     required: true
     type: string
     default: states::states1
-
   transform:
     name: transform
     description: state value transformations. By default all values are tanh-ed
@@ -222,7 +190,6 @@ parameters:
       - tanh
       - none
     default: tanh
-
   left:
     name: left
     description: size of context to the left of each pos
@@ -230,7 +197,6 @@ parameters:
     required: false
     type: integer
     default: 10
-
   right:
     name: right
     description: size of context to the right of each pos
@@ -238,7 +204,6 @@ parameters:
     required: false
     type: integer
     default: 10
-
   dims:
     name: dims
     description: >
@@ -250,11 +215,6 @@ parameters:
     items:
       type: string
     collectionFormat: csv
-#    default:
-#      - states
-#      - words
-
-
 
 definitions:
   Context:
@@ -298,4 +258,3 @@ definitions:
         description: word sequence for each position requested
         example: [ { "left": 9, "pos": 12, "right": 15, "word_ids": [ 13, 14, 15, 16, 17, 18, 19 ],
         "words": [ "hydro-quebec", "ipo", "kia", "memotec", "mlx", "nahb", "punts" ] } ]
-

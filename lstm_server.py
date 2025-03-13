@@ -15,7 +15,9 @@ CONFIG_FILE_NAME = 'lstm.yml'
 data_handlers = {}
 index_map = {}
 
-app = connexion.App(__name__, debug=True)
+# app = connexion.FlaskApp(__name__, debug=True)
+app = connexion.App(__name__)
+app.app.config['DEBUG'] = True  # Enable debug mode here
 
 
 def get_context(**request):
@@ -187,7 +189,9 @@ parser.add_argument("-dir", type=str, default=os.path.abspath('data'))
 
 if __name__ == '__main__':
     args = parser.parse_args()
-    app.run(port=int(args.port), debug=not args.nodebug, host="127.0.0.1")
+    app.run(port=int(args.port), host="127.0.0.1")
+
+    # app.run(port=int(args.port), debug=not args.nodebug, host="127.0.0.1")
 else:
     args, _ = parser.parse_known_args()
     create_data_handlers(args.dir)
